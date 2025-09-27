@@ -189,7 +189,7 @@ export default function ChatsScreen() {
         {/* Matches list */}
         <FlatList
           data={filteredMatches}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item: { id: any; }) => item.id}
           renderItem={renderMatchItem}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
