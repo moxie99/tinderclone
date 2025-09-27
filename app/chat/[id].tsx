@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { SafeAreaWrapper } from '@/components/ui/SafeAreaWrapper';
 import { Message } from '@/types';
+import { generateCompleteResponse } from '@/utils/smartResponses';
 import { Image } from 'expo-image';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -150,15 +151,25 @@ export default function ChatScreen() {
 
     setMessages(prev => [...prev, newMessage]);
 
-    // Simulate typing indicator and response
+    // Simulate typing indicator and smart response
     setIsTyping(true);
     setTimeout(() => {
       setIsTyping(false);
+      
+      // Generate smart response based on user's message
+      const smartResponse = generateCompleteResponse({
+        message: content.trim(),
+        userInterests: [], // Could be passed from user profile
+        timeOfDay: new Date().getHours() >= 5 && new Date().getHours() < 12 ? 'morning' :
+                   new Date().getHours() >= 12 && new Date().getHours() < 17 ? 'afternoon' :
+                   new Date().getHours() >= 17 && new Date().getHours() < 22 ? 'evening' : 'night'
+      });
+      
       const responseMessage: Message = {
         id: `msg_${Date.now()}_response`,
         matchId: id,
         senderId: otherUser ? Object.keys(mockUsers).find(key => mockUsers[key as keyof typeof mockUsers] === otherUser) || 'alex_user' : 'alex_user',
-        content: "That's interesting! Tell me more about it.",
+        content: smartResponse,
         timestamp: new Date(),
         type: 'text',
         read: false,
