@@ -307,12 +307,6 @@ npx eas build --platform android
 npx eas build --platform ios
 ```
 
-### Environment Variables
-Create a `.env` file in the root directory:
-```env
-EXPO_PUBLIC_API_URL=https://api.example.com
-EXPO_PUBLIC_APP_VERSION=1.0.0
-```
 
 ## 🧪 Testing
 
